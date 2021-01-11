@@ -46,7 +46,8 @@ const Axios = require('axios')
 
 async function downloadImage (url,id) { 
     try{
-    var mainf=path.join(__dirname,id+'.jpg');
+       
+    var mainf=path.join(constants.ASSET_PATH + id+'.jpg');
     // const url = 'https://127.0.0.1:8904/api/cardholders/389618/personal_data/6550'
     // const path = Path.resolve('images/6550.jpg')
     const writer = Fs.createWriteStream(mainf)
@@ -84,7 +85,7 @@ async function downloadImage (url,id) {
 
 function base64_encode(file,id) {
 // read binary data
-var mainf=path.join(__dirname,file+'.jpg');
+var mainf=path.join(constants.ASSET_PATH + file+'.jpg');
 var bitmap = fs.readFileSync(mainf);
 var rawImageData=Buffer.from(bitmap,'binary').toString('base64');
 return rawImageData;
@@ -224,6 +225,7 @@ exports. check_gallagher_delete_cardholder_events=function()
 
 }
 }
+
 exports. check_gallagher_update_cardholder_events=function()
 {
    try{
@@ -505,8 +507,7 @@ exports.update_gallagher_pdf = function(card_holder_id,frid)
                                     face_id.then(facerep=>{
                                        if(facerep){
                                         console.log("USER_FR Updated");
-                                        
-                                        var mainf=path.join(__dirname,personal_info['personID']+'.jpg');
+                                        var mainf=path.join(constants.ASSET_PATH + personal_info['personID']+'.jpg')
                                         try{
                                             fs.unlinkSync(mainf);
                                             }catch(error){}
@@ -534,7 +535,7 @@ exports.update_gallagher_pdf = function(card_holder_id,frid)
                             var gg = facerep[0]['FR']['person_id'];
                             console.log("USER_FR="+gg);
                             cron_mod.update_gallagher_pdf(personal_info['personID'],gg);
-                            var mainf=path.join(__dirname,personal_info['personID']+'.jpg');
+                            var mainf=path.join(constants.ASSET_PATH + personal_info['personID']+'.jpg');
                             try{
                             fs.unlinkSync(mainf);
                             }catch(error){}
@@ -553,13 +554,13 @@ exports.update_gallagher_pdf = function(card_holder_id,frid)
                         }
                         }
     
-                    }, 2000);
+                    }, 3000);
                     //==================================================================
                                     }
                     
                     });
                     
-                    }, 2000);
+                    }, 4000);
                     //===================================================//
     
                 }//PDF Photo available or not

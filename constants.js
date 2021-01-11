@@ -1,5 +1,6 @@
 //=========================CONFIG READING============
 //===================================================
+exports.ASSET_PATH = './assets/';
 var xlsx = require("xlsx");
 const lineReader = require('line-reader');
 lineReader.eachLine('./config.txt', function(line) {
