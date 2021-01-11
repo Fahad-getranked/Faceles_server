@@ -8,28 +8,28 @@ router.use(bodyParser.urlencoded({ extended: true }));
 const https=require("https");
 var cron_mod = require('../modules/cron_module');
 var constants=require("../constants.js");
-add_user();
-update_group_user();
+// add_user();
+// update_group_user();
 update_basic_user();
 delete_user();
 
-function add_user(){
+// function add_user(){
 	
-	var intervaly = setInterval(function() 
-	{
+// 	var intervaly = setInterval(function() 
+// 	{
 	
-	var add_user_events=cron_mod.check_gallagher_add_cardholder_events();
-	  }, constants.ADD_CARDHOLDER_EVENTS);
-}
-function update_group_user(){
+// 	var add_user_events=cron_mod.check_gallagher_add_cardholder_events();
+// 	  }, constants.ADD_CARDHOLDER_EVENTS);
+// }
+// function update_group_user(){
 
-	var intervaly = setInterval(function() 
-	{ 
+// 	var intervaly = setInterval(function() 
+// 	{ 
 	
-	var update_user_events=cron_mod.check_gallagher_update_cardholder_events();
-	  }, constants.UPDATE_CARDHOLDER_EVENTS);
+// 	var update_user_events=cron_mod.check_gallagher_update_cardholder_events();
+// 	  }, constants.UPDATE_CARDHOLDER_EVENTS);
 	
-}
+// }
 function update_basic_user(){
 
 	var intervaly = setInterval(function() 

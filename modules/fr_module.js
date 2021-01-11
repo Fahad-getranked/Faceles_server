@@ -200,6 +200,7 @@ exports. add_update_fr_card = function (firstname,lastname,personId,card_arry)
 {
  
  var beginTime=formatDate(new Date(card_arry['valid_from']));
+ console.log(beginTime);
   var endTime=formatDate(new Date(card_arry['valid_to']));
 	return new Promise((resolve) => {
 		try {
