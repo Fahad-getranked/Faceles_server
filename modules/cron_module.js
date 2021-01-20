@@ -371,7 +371,33 @@ if(cardholderlist.data.cards && photo!="" && photo!=undefined && cardholderlist.
 cron_mod.add_data_in_devices(cardholderlist.data.id);
 }
 else if(cardholderlist.data.cards && photo!="" && photo!=undefined  && cardholderlist.data.description!=undefined && cardholderlist.data.accessGroups){
-                  var count=0;
+   
+    var phone="";
+    var email="";
+    var photo="";
+    if(cardholderlist.data.personalDataDefinitions){
+       
+         
+        for(var t=0;t<cardholderlist.data.personalDataDefinitions.length;t++)
+         {
+                 if(cardholderlist.data.personalDataDefinitions[t]["@Email"])
+                 {
+                    email= cardholderlist.data.personalDataDefinitions[t]["@Email"]["value"];
+                 }
+                 if(cardholderlist.data.personalDataDefinitions[t]["@Phone"])
+                 {
+                    phone= cardholderlist.data.personalDataDefinitions[t]["@Phone"]["value"];
+                 }
+                 if(cardholderlist.data.personalDataDefinitions[t]["@Photo"])
+                 {
+                    photo= cardholderlist.data.personalDataDefinitions[t]["@Photo"].value.href;
+                 }
+                 
+         }
+     
+        }         
+    
+    var count=0;
                     for(var i=0;i<cardholderlist.data.cards.length;i++)
                     {
                         var status=cardholderlist.data.cards[i].status.value;
@@ -448,15 +474,14 @@ else if(cardholderlist.data.cards && photo!="" && photo!=undefined  && cardholde
      
                             if(cardholderlist.data.description!=undefined && cardholderlist.data.description!='')
                             {
-                                if(constants.FR_ACTIVE==1){                
+                                if(constants.FR_ACTIVE==1){
+                                                  
                                     var face_id= fr_mod.add_update_fr_card(personal_info['firstname'],personal_info['lastname'],cardholderlist.data.description,fr_card_array);
                                     face_id.then(facerep=>{
                                        if(facerep){
+                                          
                                         console.log("USER_FR Updated");
-                                        var mainf=path.join(constants.ASSET_PATH + personal_info['personID']+'.jpg')
-                                        try{
-                                            fs.unlinkSync(mainf);
-                                            }catch(error){}
+                                       cron_mod.update_fr_image(photo,cardholderlist.data.id,cardholderlist.data.description);
                                        }else{
                                         console.log("USER_FR Not  Updated");  
                                        }
@@ -517,7 +542,35 @@ else if(cardholderlist.data.cards && photo!="" && photo!=undefined  && cardholde
     
     }
     }
-
+exports.update_fr_image=function(photo,holder_id,fr_id)
+{
+    var myphoto="";
+    if(photo!=""){
+       
+    var phot= downloadImage(photo,holder_id);
+    var intervaly = setInterval(function() 
+    {
+    phot.then(te=>{     
+        if(te=='OK'){  
+            clearInterval(intervaly);
+            var intervaX = setInterval(function() 
+            {         
+            myphoto=base64_encode(holder_id);
+               
+     if(myphoto)
+     { 
+        fr_mod.update_fr_face(fr_id,myphoto);
+        var mainf=path.join(constants.ASSET_PATH + holder_id+'.jpg')  
+        try{
+            fs.unlinkSync(mainf);
+            }catch(error){}
+         clearInterval(intervaX); 
+     }},3000)
+    }
+})
+},3000)
+}
+}
 
 //==================WHEN ADD Data in devices CLICKED===============
 exports.add_data_in_devices=function(cardholder_id)

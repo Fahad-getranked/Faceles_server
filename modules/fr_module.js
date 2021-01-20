@@ -267,5 +267,73 @@ if(restp.data.code==0)
   
     });
 }
+exports. update_fr_face = function (personId,image)
+{
+  var imagesy=image.replace(/\s/g, '');
+ 
+	return new Promise((resolve) => {
+		try {
+        var devicestring="ApiKey="+constants.FR_KEY+"&MethodType=POST&ApiSecret="+constants.FR_SECRET_KEY+"&IP="+constants.FR_LOCAL_IP+"&ProtocolType="+constants.FR_PROTOCOL+"&ApiMethod=/api/visitor/v1/auth/reapplication&BodyParameters={}";	     
+  var url=constants.FR_HOST+'/api/FrData/';
+var data = qs.stringify({
+ 'ApiKey': constants.FR_KEY,
+'MethodType': 'POST',
+'ApiSecret': constants.FR_SECRET_KEY,
+'IP': '127.0.0.1',
+'ProtocolType': constants.FR_PROTOCOL,
+'ApiMethod': '/api/resource/v1/face/single/update',
+'BodyParameters': 
+'{"personId":"'+personId+'","faceData": "'+imagesy+'"}' 
+});
 
+var config = {
+  method: 'post',
+  url: url,
+  headers: { 
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  resolve(true);
+  axios({
+    method: 'POST', 
+    httpsAgent: extagent,
+    url: url,
+    data :devicestring,
+
+    })
+.then(function (restp){
+
+if(restp.data.code==0)
+{	
+
+  resolve(true);
+}else{
+
+}
+
+}).catch(error =>  {
+ 
+  resolve(false);
+});
+
+
+})
+.catch(function (error) {
+ 
+  resolve(false);
+});
+
+           
+        }catch(error)
+        {
+         
+            resolve(false);
+        }
+  
+    });
+}
 
